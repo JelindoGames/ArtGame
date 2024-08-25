@@ -511,7 +511,7 @@ MonoBehaviour:
   f: {fileID: 1525559754}
   g: {fileID: 1625391364}
   spriteRenderer: {fileID: 1021222259}
-  shapeGenerator: {fileID: 11400000, guid: f1ddb19f902c044ddaa7b219475aa123, type: 2}
+  shapeGenerator: {fileID: 11400000, guid: 1d3eb9dad93494ec1b1189a2fc82f0f6, type: 2}
   referenceCam: {fileID: 519420031}
 --- !u!1 &1021222258
 GameObject:
