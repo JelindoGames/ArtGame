@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Ellipse Generator
   m_EditorClassIdentifier: 
   minSizeX: 1
-  maxSizeX: 2
+  maxSizeX: 4
   minSizeY: 1
-  maxSizeY: 2
+  maxSizeY: 4
