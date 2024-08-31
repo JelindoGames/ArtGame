@@ -39,6 +39,7 @@ public class EllipseGenerator : ShapeGenerator
             new BezierPathSegment() { P0 = s2p2, P1 = s2p3, P2 = s3p1 },
             new BezierPathSegment() { P0 = s3p2, P1 = s3p3, P2 = s4p1 },
             new BezierPathSegment() { P0 = s4p2, P1 = s4p3, P2 = s1p1 },
+            new BezierPathSegment() { P0 = s1p2 }
         };
         return new BezierContour()
         {

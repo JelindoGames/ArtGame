@@ -6,9 +6,10 @@ using UnityEngine.InputSystem;
 public class TestPen : MonoBehaviour
 {
     [SerializeField] Camera cam;
+    [SerializeField] Transform paper;
     [SerializeField] GameObject dotPrefab;
-    [SerializeField] TestVector testVector;
     [SerializeField] float gapFillStepSize;
+    [SerializeField] StrokeEvent onStroke;
     InputMap input;
     bool pressing;
 
@@ -41,7 +42,7 @@ public class TestPen : MonoBehaviour
     {
         pressing = false;
         PenStroke finishedStroke = new PenStroke(pointsInCurrentStroke);
-        print(finishedStroke.CompareWithBezier(testVector.contour));
+        onStroke.Raise(finishedStroke);
         pointsInCurrentStroke = new List<Vector2>();
     }
 
@@ -57,9 +58,14 @@ public class TestPen : MonoBehaviour
             {
                 Vector2 lastDot = pointsInCurrentStroke[pointsInCurrentStroke.Count - 1];
                 List<Vector2> dotsToAdd = InBetweenPositions(lastDot, transform.position);
-                dotsToAdd.ForEach(v2 => Instantiate(dotPrefab, v2, Quaternion.identity));
+                foreach (Vector2 pos in dotsToAdd)
+                {
+                    GameObject fillerDot = Instantiate(dotPrefab, paper);
+                    fillerDot.transform.position = pos;
+                }
             }
-            Instantiate(dotPrefab, transform.position, Quaternion.identity);
+            GameObject dot = Instantiate(dotPrefab, paper);
+            dot.transform.position = transform.position;
             pointsInCurrentStroke.Add(transform.position);
         }
     }

@@ -459,7 +459,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &969734406
+--- !u!1 &872066230
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -467,52 +467,83 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 969734407}
-  - component: {fileID: 969734408}
+  - component: {fileID: 872066231}
+  - component: {fileID: 872066232}
+  - component: {fileID: 872066233}
   m_Layer: 0
-  m_Name: VectorTest
+  m_Name: Paper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &969734407
+--- !u!4 &872066231
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 969734406}
+  m_GameObject: {fileID: 872066230}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1059.4926, y: 677.82605, z: 16.162937}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &969734408
+--- !u!114 &872066232
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 969734406}
+  m_GameObject: {fileID: 872066230}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24c1e507005544534b52f2fa6dedf4bb, type: 3}
+  m_Script: {fileID: 11500000, guid: 553b8ab584c8847769c52323b6e000ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  a: {fileID: 121299588}
-  b: {fileID: 1769958746}
-  c: {fileID: 611247657}
-  d: {fileID: 351354544}
-  e: {fileID: 2128097763}
-  f: {fileID: 1525559754}
-  g: {fileID: 1625391364}
-  spriteRenderer: {fileID: 1021222259}
-  shapeGenerator: {fileID: 11400000, guid: 7a84121b6fce243279952e4def404aca, type: 2}
-  referenceCam: {fileID: 519420031}
+--- !u!114 &872066233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 872066230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2458933140c54c9db0aec7a69c1b617, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _developerDescription: 
+  _unityEventResponse:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 872066232}
+        m_TargetAssemblyTypeName: Paper, Assembly-CSharp
+        m_MethodName: Clear
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _actionResponses: []
+  _conditions: []
+  _operator: 0
+  _replayEventBufferOnRegister: 1
+  _eventReference:
+    _usage: 0
+    _event: {fileID: 11400000, guid: 61a3197f4e9f34ce6b5a83ad91916735, type: 2}
+    _eventInstancer: {fileID: 0}
+    _collection: {fileID: 0}
+    _list: {fileID: 0}
+    _collectionInstancer: {fileID: 0}
+    _listInstancer: {fileID: 0}
 --- !u!1 &1021222258
 GameObject:
   m_ObjectHideFlags: 0
@@ -524,7 +555,7 @@ GameObject:
   - component: {fileID: 1021222260}
   - component: {fileID: 1021222259}
   m_Layer: 0
-  m_Name: Sprite Renderer
+  m_Name: Vector Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -595,8 +626,90 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1283618415
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1283618417}
+  - component: {fileID: 1283618416}
+  - component: {fileID: 1283618418}
+  m_Layer: 0
+  m_Name: Lesson
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1283618416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1283618415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 525d3d68d3c6f4b3a92cc309119a6f0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shapeGenerator: {fileID: 11400000, guid: 1d3eb9dad93494ec1b1189a2fc82f0f6, type: 2}
+  drawShapesOn: {fileID: 1021222259}
+  playOnStart: 1
+  onLessonStart: {fileID: 11400000, guid: 61a3197f4e9f34ce6b5a83ad91916735, type: 2}
+--- !u!4 &1283618417
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1283618415}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -6.2108455, y: -10.945869, z: -0.21937066}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1283618418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1283618415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41976a29a9df642c8a880c0609cdaf36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _developerDescription: 
+  _unityEventResponse:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1283618416}
+        m_TargetAssemblyTypeName: Lesson, Assembly-CSharp
+        m_MethodName: ReviewExercise
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _actionResponses: []
+  _conditions: []
+  _operator: 0
+  _replayEventBufferOnRegister: 1
+  _event: {fileID: 11400000, guid: 76ded8c054f754c16b79166cc7daf73e, type: 2}
 --- !u!1 &1525559753
 GameObject:
   m_ObjectHideFlags: 0
@@ -879,9 +992,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 519420031}
+  paper: {fileID: 872066231}
   dotPrefab: {fileID: 1438015452345553394, guid: 553061c4ababf4527bbac4e4bb774484, type: 3}
-  testVector: {fileID: 969734408}
   gapFillStepSize: 3
+  onStroke: {fileID: 11400000, guid: 76ded8c054f754c16b79166cc7daf73e, type: 2}
 --- !u!4 &1967539019
 Transform:
   m_ObjectHideFlags: 0
@@ -1017,5 +1131,5 @@ Transform:
   - {fileID: 1525559754}
   - {fileID: 1625391364}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
