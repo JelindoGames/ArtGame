@@ -217,8 +217,9 @@ GameObject:
   - component: {fileID: 147059118}
   - component: {fileID: 147059120}
   - component: {fileID: 147059119}
+  - component: {fileID: 147059121}
   m_Layer: 5
-  m_Name: FPS
+  m_Name: FPS Tracker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -342,30 +343,13 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 147059117}
   m_CullTransparentMesh: 1
---- !u!1 &339166425
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 339166427}
-  - component: {fileID: 339166426}
-  m_Layer: 0
-  m_Name: FPS Tracker
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &339166426
+--- !u!114 &147059121
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 339166425}
+  m_GameObject: {fileID: 147059117}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 11443014931a042c28e5e183e6123de3, type: 3}
@@ -373,21 +357,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   secondsPerDisplay: 0.5
   displayText: {fileID: 147059119}
---- !u!4 &339166427
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 339166425}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &351354543
 GameObject:
   m_ObjectHideFlags: 0
@@ -910,6 +879,51 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1604626845
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1604626847}
+  - component: {fileID: 1604626848}
+  m_Layer: 0
+  m_Name: FPS Setter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1604626847
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1604626845}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1604626848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1604626845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0207f754f7018482492cb99a329fcdc0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetFrameRate: 60
 --- !u!1 &1625391363
 GameObject:
   m_ObjectHideFlags: 0
@@ -1169,7 +1183,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 553b8ab584c8847769c52323b6e000ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  brushSize: 50
+  brushSize: 30
   renderTexture: {fileID: 8400000, guid: 80e052e548479465782fb8956efe175c, type: 2}
   onStrokeCompleted: {fileID: 11400000, guid: 76ded8c054f754c16b79166cc7daf73e, type: 2}
 --- !u!1 &2036337202
@@ -1484,8 +1498,8 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 519420032}
+  - {fileID: 1604626847}
   - {fileID: 2036337206}
-  - {fileID: 339166427}
   - {fileID: 1283618417}
   - {fileID: 1021222260}
   - {fileID: 2137092862}

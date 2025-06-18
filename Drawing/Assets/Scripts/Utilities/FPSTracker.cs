@@ -12,6 +12,11 @@ public class FPSTracker : MonoBehaviour
 
     void Start()
     {
+        if (secondsPerDisplay <= 0)
+        {
+            Debug.LogError("FPSTracker: SecondsPerDisplay must be positive.");
+            return;
+        }
         StartCoroutine(MeasureFrames());
     }
 
