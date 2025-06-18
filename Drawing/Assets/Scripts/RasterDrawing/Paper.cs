@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,6 +10,7 @@ using UnityEngine.InputSystem;
 public class Paper : MonoBehaviour
 {
     [SerializeField] int brushSize;
+    [SerializeField] StrokeEvent onStrokeCompleted;
 
     Camera referenceCamera;
     SpriteRenderer spriteRenderer;
@@ -19,6 +21,8 @@ public class Paper : MonoBehaviour
     bool inputPressing;
     Vector2 inputCursorPosition;
     Vector2Int? lastFrameCursorPosition;
+
+    List<Vector2> positionsInCurrentStroke = new();
 
     void Awake()
     {
@@ -46,11 +50,25 @@ public class Paper : MonoBehaviour
     void OnRelease(InputAction.CallbackContext ctx)
     {
         inputPressing = false;
+        lastFrameCursorPosition = null;
+        PenStroke finishedStroke = new(positionsInCurrentStroke);
+        onStrokeCompleted.Raise(finishedStroke);
+        positionsInCurrentStroke = new List<Vector2>();
     }
 
     void OnPositionChange(InputAction.CallbackContext ctx)
     {
         inputCursorPosition = ctx.ReadValue<Vector2>();
+        if (inputPressing)
+        {
+            Vector2Int drawingPosition = TexturePositionOfCursor();
+            if (TexturePositionIsValid(drawingPosition))
+            {
+                positionsInCurrentStroke.Add(WorldPositionOfCursor());
+                DrawUpTo(drawingPosition);
+                lastFrameCursorPosition = drawingPosition;
+            }
+        }
     }
 
     void Start()
@@ -69,21 +87,6 @@ public class Paper : MonoBehaviour
         }
 
         tex = Instantiate(sharedTex); // Give each instance a unique texture
-    }
-
-    void Update()
-    {
-        if (inputPressing)
-        {
-            Vector2Int drawingPosition = TexturePositionOfCursor();
-            if (TexturePositionIsValid(drawingPosition))
-            {
-                DrawUpTo(drawingPosition);
-                lastFrameCursorPosition = drawingPosition;
-                return;
-            }
-        }
-        lastFrameCursorPosition = null;
     }
 
     /// <summary>
@@ -127,8 +130,8 @@ public class Paper : MonoBehaviour
     /// </summary>
     Vector2Int TexturePositionOfCursor()
     {
-        Vector3 mousePos = inputCursorPosition;
-        Vector3 worldPos = referenceCamera.ScreenToWorldPoint(mousePos);
+        Vector3 cursorPos = inputCursorPosition;
+        Vector3 worldPos = referenceCamera.ScreenToWorldPoint(cursorPos);
         Vector3 localPos = transform.InverseTransformPoint(worldPos);
 
         Sprite sprite = spriteRenderer.sprite;
@@ -144,6 +147,14 @@ public class Paper : MonoBehaviour
         int texY = (int)((localY / rect.height) * tex.height);
 
         return new Vector2Int(texX, texY);
+    }
+
+    /// <summary>
+    /// Translate the current cursor position to a world position.
+    /// </summary>
+    Vector3 WorldPositionOfCursor()
+    {
+        return referenceCamera.ScreenToWorldPoint(inputCursorPosition);
     }
 
     /// <summary>
