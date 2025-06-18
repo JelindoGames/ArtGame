@@ -5,15 +5,15 @@ using UnityEngine.InputSystem;
 /// <summary>
 /// Script for a Sprite that can be clicked on to draw.
 /// </summary>
-[RequireComponent(typeof(SpriteRenderer))]
-[RequireComponent(typeof(Collider2D))]
+[RequireComponent(typeof(RectTransform))]
 public class Paper : MonoBehaviour
 {
     [SerializeField] int brushSize;
+    [SerializeField] RenderTexture renderTexture;
     [SerializeField] StrokeEvent onStrokeCompleted;
 
+    RectTransform rectTransform;
     Camera referenceCamera;
-    SpriteRenderer spriteRenderer;
     Color32[] initialTexColoring;
     Texture2D tex;
     Color32[] brushStroke;
@@ -75,11 +75,18 @@ public class Paper : MonoBehaviour
 
     void Start()
     {
+        rectTransform = GetComponent<RectTransform>();
         referenceCamera = Camera.main;
-        spriteRenderer = GetComponent<SpriteRenderer>();
 
-        Texture2D sharedTex = spriteRenderer.sprite.texture;
-        initialTexColoring = sharedTex.GetPixels32();
+        // Create the texture and color it white
+        tex = new Texture2D(2048, 2048);
+        initialTexColoring = new Color32[tex.width * tex.height];
+        Color32 white = new(255, 255, 255, 255);
+        for (long i = 0; i < tex.width * tex.height; i++)
+        {
+            initialTexColoring[i] = white;
+        }
+        tex.SetPixels32(initialTexColoring);
 
         // Save the brush stroke here to it doesn't have to be dealt with again
         brushStroke = new Color32[brushSize * brushSize];
@@ -88,8 +95,6 @@ public class Paper : MonoBehaviour
         {
             brushStroke[i] = black;
         }
-
-        tex = Instantiate(sharedTex); // Give each instance a unique texture
     }
 
     /// <summary>
@@ -129,23 +134,17 @@ public class Paper : MonoBehaviour
     /// </summary>
     Vector2Int TexturePositionOfCursor()
     {
-        Vector3 cursorPos = inputCursorPosition;
-        Vector3 worldPos = referenceCamera.ScreenToWorldPoint(cursorPos);
-        Vector3 localPos = transform.InverseTransformPoint(worldPos);
+        Vector2 cursorPos = inputCursorPosition;
+        Vector2 bottomLeftScreenPoint = referenceCamera.WorldToScreenPoint(rectTransform.rect.min);
 
-        Sprite sprite = spriteRenderer.sprite;
-        Rect rect = sprite.textureRect;
-        Vector2 pivot = sprite.pivot;
-        float pixelsPerUnit = sprite.pixelsPerUnit;
+        // (0, 0) is bottom-left of the rect
+        Vector2 relativeCursorPos = new(cursorPos.x - bottomLeftScreenPoint.x, cursorPos.y - bottomLeftScreenPoint.y);
+        // No matter what resolution, the screen height (on ortho size 5) always seems to be 10 world units tall
+        Vector2 relativeCursorPosScaled = new(relativeCursorPos.x * 10 / rectTransform.rect.width, relativeCursorPos.y * 10 / rectTransform.rect.height);
+        relativeCursorPosScaled *= referenceCamera.orthographicSize / 5;
+        relativeCursorPosScaled *= (float)tex.height / (float)Screen.height;
 
-        // The position "within" the sprite rect
-        float localX = pivot.x + (localPos.x * pixelsPerUnit);
-        float localY = pivot.y + (localPos.y * pixelsPerUnit);
-
-        int texX = (int)((localX / rect.width) * tex.width);
-        int texY = (int)((localY / rect.height) * tex.height);
-
-        return new Vector2Int(texX, texY);
+        return new Vector2Int((int)relativeCursorPosScaled.x, (int)relativeCursorPosScaled.y);
     }
 
     /// <summary>
@@ -182,8 +181,6 @@ public class Paper : MonoBehaviour
     void ApplyTextureChanges()
     {
         tex.Apply();
-        // TODO for some reason the PPU needs to be the same as the texture size for the full texture to be drawable
-        Sprite newSprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), 2048);
-        spriteRenderer.sprite = newSprite;
+        Graphics.Blit(tex, renderTexture);
     }
 }
