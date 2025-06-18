@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.VectorGraphics;
-using UnityEditor.U2D.Path;
+//using UnityEditor.U2D.Path;
 
 // A stroke of a raster pen.
 public class PenStroke
@@ -32,9 +32,10 @@ public class PenStroke
             float minDistance = float.MaxValue;
             for (int i = 0; i < bezierPoints.Count - 3;)
             {
-                float t;
-                Vector2 closestPoint = BezierUtility.ClosestPointOnCurve(point, bezierPoints[i], bezierPoints[i + 3], bezierPoints[i + 1], bezierPoints[i + 2], out t);
-                float dist = Vector2.Distance(closestPoint, point);
+                //float t;
+                //Vector2 closestPoint = BezierUtility.ClosestPointOnCurve(point, bezierPoints[i], bezierPoints[i + 3], bezierPoints[i + 1], bezierPoints[i + 2], out t);
+                //float dist = Vector2.Distance(closestPoint, point);
+                float dist = 1;
                 if (dist < minDistance)
                 {
                     minDistance = dist;
