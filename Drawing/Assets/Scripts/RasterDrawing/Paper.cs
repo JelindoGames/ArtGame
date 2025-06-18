@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// Script for a Sprite that can be clicked on to draw.
@@ -11,16 +12,13 @@ public class Paper : MonoBehaviour
 
     Camera referenceCamera;
     SpriteRenderer spriteRenderer;
-    //Color32[] originalColoring;
     Texture2D tex;
-
-    bool mouseOver;
-    Vector2Int? lastFrameMousePosition;
-
     Color32[] brushStroke;
 
-    /*
     InputMap input;
+    bool inputPressing;
+    Vector2 inputCursorPosition;
+    Vector2Int? lastFrameCursorPosition;
 
     void Awake()
     {
@@ -29,7 +27,31 @@ public class Paper : MonoBehaviour
         input.Drawing.Press.performed += OnPress;
         input.Drawing.Press.canceled += OnRelease;
     }
-    */
+
+    void OnEnable()
+    {
+        input.Enable();
+    }
+
+    private void OnDisable()
+    {
+        input.Disable();
+    }
+
+    void OnPress(InputAction.CallbackContext ctx)
+    {
+        inputPressing = true;
+    }
+
+    void OnRelease(InputAction.CallbackContext ctx)
+    {
+        inputPressing = false;
+    }
+
+    void OnPositionChange(InputAction.CallbackContext ctx)
+    {
+        inputCursorPosition = ctx.ReadValue<Vector2>();
+    }
 
     void Start()
     {
@@ -37,7 +59,6 @@ public class Paper : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
 
         Texture2D sharedTex = spriteRenderer.sprite.texture;
-        //originalColoring = sharedTex.GetPixels32();
 
         // Save the brush stroke here to it doesn't have to be dealt with again
         brushStroke = new Color32[brushSize * brushSize];
@@ -50,67 +71,63 @@ public class Paper : MonoBehaviour
         tex = Instantiate(sharedTex); // Give each instance a unique texture
     }
 
-    void OnMouseEnter()
-    {
-        mouseOver = true;
-    }
-
-    void OnMouseExit()
-    {
-        mouseOver = false;
-    }
-
     void Update()
     {
-        if (mouseOver && Input.GetMouseButton(0))
+        if (inputPressing)
         {
-            Vector2Int cleaningPosition = TexturePositionOfMouse();
-            DrawUpTo(cleaningPosition);
-            lastFrameMousePosition = cleaningPosition;
+            Vector2Int drawingPosition = TexturePositionOfCursor();
+            if (TexturePositionIsValid(drawingPosition))
+            {
+                DrawUpTo(drawingPosition);
+                lastFrameCursorPosition = drawingPosition;
+                return;
+            }
         }
-        else
-        {
-            lastFrameMousePosition = null;
-        }
+        lastFrameCursorPosition = null;
     }
 
     /// <summary>
-    /// Draw from the last frame's cleaning position (if it exists) to the given cleaning position.
+    /// Draw from the last frame's drawing position (if it exists) to the given drawing position.
     /// Includes smoothing (extra pixels in the middle).
+    /// Applies all texture changes.
     /// </summary>
-    void DrawUpTo(Vector2Int cleaningPosition)
+    void DrawUpTo(Vector2Int drawingPosition)
     {
         // If we need smoothing from last frame to this one
-        if (lastFrameMousePosition.HasValue)
+        if (lastFrameCursorPosition.HasValue)
         {
-            int smoothingPixelsNeeded = (int)Vector2Int.Distance(lastFrameMousePosition.Value, cleaningPosition);
+            int smoothingPixelsNeeded = (int)Vector2Int.Distance(lastFrameCursorPosition.Value, drawingPosition);
             for (int i = 1; i < smoothingPixelsNeeded; i++)
             {
-                Vector2 midpoint = Vector2.Lerp(lastFrameMousePosition.Value, cleaningPosition, (float)i / smoothingPixelsNeeded);
+                Vector2 midpoint = Vector2.Lerp(lastFrameCursorPosition.Value, drawingPosition, (float)i / smoothingPixelsNeeded);
                 DrawAt(new Vector2Int((int)midpoint.x, (int)midpoint.y));
             }
         }
-        DrawAt(cleaningPosition);
+        DrawAt(drawingPosition);
 
         tex.Apply();
-        // TODO for some reason the PPU needs to be the same as the texture size for the full texture to be paintable
+        // TODO for some reason the PPU needs to be the same as the texture size for the full texture to be drawable
         Sprite newSprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), 614);
         spriteRenderer.sprite = newSprite;
     }
 
     /// <summary>
     /// Draw at the given exact position.
+    /// Does not apply any texture changes.
     /// </summary>
-    void DrawAt(Vector2Int cleaningPosition)
+    void DrawAt(Vector2Int drawingPosition)
     {
-        int actualBrushSizeX = Mathf.Min(brushSize, tex.width - cleaningPosition.x);
-        int actualBrushSizeY = Mathf.Min(brushSize, tex.height - cleaningPosition.y);
-        tex.SetPixels32(cleaningPosition.x, cleaningPosition.y, actualBrushSizeX, actualBrushSizeY, brushStroke);
+        int actualBrushSizeX = Mathf.Min(brushSize, tex.width - drawingPosition.x);
+        int actualBrushSizeY = Mathf.Min(brushSize, tex.height - drawingPosition.y);
+        tex.SetPixels32(drawingPosition.x, drawingPosition.y, actualBrushSizeX, actualBrushSizeY, brushStroke);
     }
 
-    Vector2Int TexturePositionOfMouse()
+    /// <summary>
+    /// Translate the current cursor position to a position on the paper texture.
+    /// </summary>
+    Vector2Int TexturePositionOfCursor()
     {
-        Vector3 mousePos = Input.mousePosition;
+        Vector3 mousePos = inputCursorPosition;
         Vector3 worldPos = referenceCamera.ScreenToWorldPoint(mousePos);
         Vector3 localPos = transform.InverseTransformPoint(worldPos);
 
@@ -129,11 +146,14 @@ public class Paper : MonoBehaviour
         return new Vector2Int(texX, texY);
     }
 
-    /*
-    void OnDestroy()
+    /// <summary>
+    /// Is the given texture position actually on the paper's texture?
+    /// </summary>
+    bool TexturePositionIsValid(Vector2Int texturePosition)
     {
-        tex.SetPixels32(originalColoring);
-        tex.Apply();
+        return texturePosition.x >= 0 &&
+            texturePosition.y >= 0 &&
+            texturePosition.x < tex.width &&
+            texturePosition.y < tex.height;
     }
-    */
 }
