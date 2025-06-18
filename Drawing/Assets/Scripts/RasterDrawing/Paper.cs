@@ -14,6 +14,7 @@ public class Paper : MonoBehaviour
 
     Camera referenceCamera;
     SpriteRenderer spriteRenderer;
+    Color32[] initialTexColoring;
     Texture2D tex;
     Color32[] brushStroke;
 
@@ -54,6 +55,7 @@ public class Paper : MonoBehaviour
         PenStroke finishedStroke = new(positionsInCurrentStroke);
         onStrokeCompleted.Raise(finishedStroke);
         positionsInCurrentStroke = new List<Vector2>();
+        Clear();
     }
 
     void OnPositionChange(InputAction.CallbackContext ctx)
@@ -77,6 +79,7 @@ public class Paper : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
 
         Texture2D sharedTex = spriteRenderer.sprite.texture;
+        initialTexColoring = sharedTex.GetPixels32();
 
         // Save the brush stroke here to it doesn't have to be dealt with again
         brushStroke = new Color32[brushSize * brushSize];
@@ -107,11 +110,7 @@ public class Paper : MonoBehaviour
             }
         }
         DrawAt(drawingPosition);
-
-        tex.Apply();
-        // TODO for some reason the PPU needs to be the same as the texture size for the full texture to be drawable
-        Sprite newSprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), 614);
-        spriteRenderer.sprite = newSprite;
+        ApplyTextureChanges();
     }
 
     /// <summary>
@@ -166,5 +165,25 @@ public class Paper : MonoBehaviour
             texturePosition.y >= 0 &&
             texturePosition.x < tex.width &&
             texturePosition.y < tex.height;
+    }
+
+    /// <summary>
+    /// Clears what has been drawn so far.
+    /// </summary>
+    void Clear()
+    {
+        tex.SetPixels32(initialTexColoring);
+        ApplyTextureChanges();
+    }
+
+    /// <summary>
+    /// Takes the changes to the working texture, and actually visualizes them with a new sprite.
+    /// </summary>
+    void ApplyTextureChanges()
+    {
+        tex.Apply();
+        // TODO for some reason the PPU needs to be the same as the texture size for the full texture to be drawable
+        Sprite newSprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), 614);
+        spriteRenderer.sprite = newSprite;
     }
 }
