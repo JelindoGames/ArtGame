@@ -5,7 +5,7 @@ using TMPro;
 /// <summary>
 /// Script for tracking and displaying FPS.
 /// </summary>
-public class FPSTracker : MonoBehaviour
+public class FrameRateTracker : MonoBehaviour
 {
     [SerializeField] float secondsPerDisplay;
     [SerializeField] TextMeshProUGUI displayText;

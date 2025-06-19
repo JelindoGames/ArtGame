@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.VectorGraphics;
 using UnityAtoms.BaseAtoms;
+using TMPro;
 
 public class Lesson : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class Lesson : MonoBehaviour
     [SerializeField] SpriteRenderer drawShapesOn;
     [SerializeField] bool playOnStart;
     [SerializeField] VoidEvent onLessonStart;
+    [SerializeField] TextMeshProUGUI performanceText;
     Camera cam;
     BezierContour currentContour;
 
@@ -31,7 +33,7 @@ public class Lesson : MonoBehaviour
 
     public void ReviewExercise(PenStroke stroke)
     {
-        print(stroke.CompareWithBezier(currentContour));
+        performanceText.text = "Score: " + stroke.CompareWithBezier(currentContour);
         StartExercise();
     }
 }

@@ -9,7 +9,7 @@ public static class ShapeDrawUtils
     {
         var pathProps = new PathProperties()
         {
-            Stroke = new Stroke() { Color = Color.red, HalfThickness = 0.1f }
+            Stroke = new Stroke() { Color = new Color(1, 0, 0, 0.5f), HalfThickness = 0.1f }
         };
         var shape = new Shape()
         {

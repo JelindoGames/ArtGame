@@ -87,6 +87,7 @@ public class Paper : MonoBehaviour
             initialTexColoring[i] = white;
         }
         tex.SetPixels32(initialTexColoring);
+        ApplyTextureChanges();
 
         // Save the brush stroke here to it doesn't have to be dealt with again
         brushStroke = new Color32[brushSize * brushSize];
