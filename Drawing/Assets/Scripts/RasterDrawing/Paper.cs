@@ -66,7 +66,6 @@ public class Paper : MonoBehaviour
             Vector2Int drawingPosition = TexturePositionOfCursor();
             if (TexturePositionIsValid(drawingPosition))
             {
-                positionsInCurrentStroke.Add(WorldPositionOfCursor());
                 DrawUpTo(drawingPosition);
                 lastFrameCursorPosition = drawingPosition;
             }
@@ -120,14 +119,17 @@ public class Paper : MonoBehaviour
     }
 
     /// <summary>
-    /// Draw at the given exact position.
+    /// Draw at the given exact position (this position being the center of the brush).
     /// Does not apply any texture changes.
     /// </summary>
     void DrawAt(Vector2Int drawingPosition)
     {
-        int actualBrushSizeX = Mathf.Min(brushSize, tex.width - drawingPosition.x);
-        int actualBrushSizeY = Mathf.Min(brushSize, tex.height - drawingPosition.y);
-        tex.SetPixels32(drawingPosition.x, drawingPosition.y, actualBrushSizeX, actualBrushSizeY, brushStroke);
+        int brushLeft = Mathf.Max(0, drawingPosition.x - brushSize / 2);
+        int brushBottom = Mathf.Max(0, drawingPosition.y - brushSize / 2);
+        int actualBrushSizeX = Mathf.Min(brushSize, tex.width - brushLeft);
+        int actualBrushSizeY = Mathf.Min(brushSize, tex.height - brushBottom);
+        tex.SetPixels32(brushLeft, brushBottom, actualBrushSizeX, actualBrushSizeY, brushStroke);
+        positionsInCurrentStroke.Add(TexturePositionToWorldPosition(drawingPosition));
     }
 
     /// <summary>
@@ -149,11 +151,13 @@ public class Paper : MonoBehaviour
     }
 
     /// <summary>
-    /// Translate the current cursor position to a world position.
+    /// Convert the given texture position to world space.
     /// </summary>
-    Vector3 WorldPositionOfCursor()
+    Vector3 TexturePositionToWorldPosition(Vector2Int texturePos)
     {
-        return referenceCamera.ScreenToWorldPoint(inputCursorPosition);
+        Vector2 bottomLeftScreenPoint = referenceCamera.WorldToScreenPoint(rectTransform.rect.min);
+        Vector2 screenSpaceTexturePos = texturePos + bottomLeftScreenPoint;
+        return referenceCamera.ScreenToWorldPoint(screenSpaceTexturePos);
     }
 
     /// <summary>

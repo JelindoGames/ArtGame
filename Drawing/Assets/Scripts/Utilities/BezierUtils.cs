@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 /// <summary>
 /// Custom-written utilities for dealing with Bezier curves.
@@ -22,23 +23,16 @@ public static class BezierUtils
     }
 
     /// <summary>
-    /// Brute-force method for roughly figuring out what the closest point on a cubic bezier curve is to a given point.
-    /// Argument "measurements" represents how many points on the curve are checked.
+    /// Get "amount" points on a Bezier Curve, which are evenly spaced from each other.
     /// </summary>
-    public static Vector2 ClosestPointOnCurve(Vector2 point, Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3, int measurements=20)
+    public static List<Vector2> GetRepresentativePoints(Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3, int amount)
     {
-        Vector2 closestPoint = Vector2.zero;
-        float closestDistance = float.MaxValue;
-        for (float relativePos = 0; relativePos < 1; relativePos += 1f / measurements)
+        List<Vector2> toReturn = new();
+        for (int i = 0; i < amount; i++)
         {
-            Vector2 curvePoint = CubicPoint(p0, p1, p2, p3, relativePos);
-            float distance = Vector2.Distance(curvePoint, point);
-            if (distance < closestDistance)
-            {
-                closestDistance = distance;
-                closestPoint = curvePoint;
-            }
+            float progress = (float)i / amount;
+            toReturn.Add(CubicPoint(p0, p1, p2, p3, progress));
         }
-        return closestPoint;
+        return toReturn;
     }
 }

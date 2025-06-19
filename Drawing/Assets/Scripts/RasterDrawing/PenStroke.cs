@@ -14,33 +14,42 @@ public class PenStroke
     }
 
     // Returns this pen stroke's average distance to the given bezier curve
-    public float CompareWithBezier(BezierContour contour)
+    public string CompareWithBezier(BezierContour contour)
     {
-        // Flatten list of points in the bezier curve
-        List<Vector2> bezierPoints = new List<Vector2>();
+        // Flatten list of key points (curve-defining points) in the bezier curve
+        List<Vector2> keyBezierPoints = new List<Vector2>();
         foreach (BezierPathSegment segment in contour.Segments)
         {
-            bezierPoints.Add(segment.P0);
-            bezierPoints.Add(segment.P1);
-            bezierPoints.Add(segment.P2);
+            keyBezierPoints.Add(segment.P0);
+            keyBezierPoints.Add(segment.P1);
+            keyBezierPoints.Add(segment.P2);
         }
-        List<float> distances = new List<float>(); // Closest distance to bezier curve, for each pen stroke point
-        foreach (Vector2 point in points)
+
+        // Get representative bezier points (points on the curve which don't necessarily define it)
+        List<Vector2> bezierPoints = new();
+        for (int i = 0; i < keyBezierPoints.Count - 3; i += 3)
         {
-            // Split bezier into cubic curves and find which mini-curve has the closest point
-            float minDistance = float.MaxValue;
-            for (int i = 0; i < bezierPoints.Count - 3;)
-            {
-                Vector2 closestPoint = BezierUtils.ClosestPointOnCurve(point, bezierPoints[i], bezierPoints[i + 3], bezierPoints[i + 1], bezierPoints[i + 2]);
-                float dist = Vector2.Distance(closestPoint, point);
-                if (dist < minDistance)
-                {
-                    minDistance = dist;
-                }
-                i += 3;
-            }
-            distances.Add(minDistance);
+            bezierPoints.AddRange(BezierUtils.GetRepresentativePoints(keyBezierPoints[i], keyBezierPoints[i + 3], keyBezierPoints[i + 1], keyBezierPoints[i + 2], 20));
         }
+
+        // For each representative bezier point, find the distance to the CLOSEST stroke point
+        List<float> distances = new();
+        foreach (Vector2 bezierPoint in bezierPoints)
+        {
+            float distance = float.MaxValue;
+            foreach (Vector2 strokePoint in points)
+            {
+                float newDistance = Vector2.Distance(strokePoint, bezierPoint);
+                if (newDistance < distance)
+                {
+                    distance = newDistance;
+                }
+            }
+            distances.Add(distance);
+        }
+
+        Debug.Log("AMOUNT: " + points.Count);
+
         // Average out distances
         float averageDistance = 0;
         foreach (float distance in distances)
@@ -48,6 +57,17 @@ public class PenStroke
             averageDistance += distance;
         }
         averageDistance /= distances.Count;
-        return averageDistance;
+
+        // Find standard deviation
+        float standardDeviation = 0;
+        foreach (float distance in distances)
+        {
+            standardDeviation += Mathf.Pow(distance - averageDistance, 2);
+        }
+        standardDeviation /= distances.Count;
+        standardDeviation = Mathf.Sqrt(standardDeviation);
+
+        return "AVG: " + averageDistance + "\n" +
+            "STD DEV: " + standardDeviation;
     }
 }

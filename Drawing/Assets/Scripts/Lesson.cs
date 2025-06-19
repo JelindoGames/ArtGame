@@ -33,7 +33,7 @@ public class Lesson : MonoBehaviour
 
     public void ReviewExercise(PenStroke stroke)
     {
-        performanceText.text = "Score: " + stroke.CompareWithBezier(currentContour);
+        performanceText.text = stroke.CompareWithBezier(currentContour);
         StartExercise();
     }
 }
