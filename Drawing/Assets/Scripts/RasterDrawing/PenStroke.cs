@@ -6,21 +6,23 @@ using Unity.VectorGraphics;
 // A stroke of a raster pen.
 public class PenStroke
 {
-    public List<Vector2> points;
+    public List<Vector2> Points { get; private set; }
 
     public PenStroke(List<Vector2> points)
     {
-        this.points = points;
+        Points = points;
     }
 
     public string CompareWithShape(IShape shape)
     {
+        Debug.Log(Points.Count);
         return "Similarity: " + shape.CompareToStroke(this);
     }
 
     // Returns this pen stroke's average distance to the given bezier curve
     public string CompareWithBezier(BezierContour contour)
     {
+        /*
         // Flatten list of key points (curve-defining points) in the bezier curve
         List<Vector2> keyBezierPoints = new List<Vector2>();
         foreach (BezierPathSegment segment in contour.Segments)
@@ -103,8 +105,11 @@ public class PenStroke
         }
         */
 
+        /*
         return "AVG B2S: " + averageBezierToStrokeDistance + "\n" +
             "AVG S2B: " + averageStrokeToBezierDistance + "\n" +
             "STD DEV S2B: " + standardDeviation;
+        */
+        return "Deprecated";
     }
 }
