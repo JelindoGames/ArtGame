@@ -14,5 +14,5 @@ public interface IShape
     /// Returns how similar this shape is to the given stroke.
     /// Scored on a scale of 0 (completely different) to 1 (exactly the same).
     /// </summary>
-    public float CompareToStroke(PenStroke stroke);
+    public string CompareToStroke(PenStroke stroke);
 }

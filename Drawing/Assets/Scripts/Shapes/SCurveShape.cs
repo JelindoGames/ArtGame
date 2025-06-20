@@ -30,7 +30,7 @@ public class SCurveShape : IShape
         };
     }
 
-    public float CompareToStroke(PenStroke stroke)
+    public string CompareToStroke(PenStroke stroke)
     {
         throw new System.NotImplementedException();
     }

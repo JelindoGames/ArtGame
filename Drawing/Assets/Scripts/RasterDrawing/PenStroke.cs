@@ -16,7 +16,27 @@ public class PenStroke
     public string CompareWithShape(IShape shape)
     {
         Debug.Log(Points.Count);
-        return "Similarity: " + shape.CompareToStroke(this);
+        return shape.CompareToStroke(this);
+    }
+
+    /// <summary>
+    /// Goes through each point on the stroke to find which one is the closest
+    /// to the given point.
+    /// </summary>
+    public Vector2 ClosestPointOnStrokeTo(Vector2 pointToCheck)
+    {
+        Vector2 closestPoint = Points[0];
+        float closestDistance = float.MaxValue;
+        foreach (Vector2 point in Points)
+        {
+            float distance = Vector2.Distance(pointToCheck, point);
+            if (distance < closestDistance)
+            {
+                closestPoint = point;
+                closestDistance = distance;
+            }
+        }
+        return closestPoint;
     }
 
     // Returns this pen stroke's average distance to the given bezier curve

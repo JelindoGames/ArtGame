@@ -18,17 +18,18 @@ public class LineShape : IShape
 
     /// <summary>
     /// Finds the point on this line that the given point is closest to.
+    /// This line is treated as a full line, not a line segment, for this purposes.
     /// </summary>
     Vector2 ClosestPointOnLineTo(Vector2 point)
     {
         Vector2 lineVector = endingPoint - startingPoint;
         if (lineVector.x == 0) // Vertical line case
         {
-            return new Vector2(startingPoint.x, Mathf.Clamp(point.y, startingPoint.y, endingPoint.y));
+            return new Vector2(startingPoint.x, point.y);
         }
         if (lineVector.y == 0) // Horizontal line case
         {
-            return new Vector2(Mathf.Clamp(point.x, startingPoint.x, endingPoint.x), startingPoint.y);
+            return new Vector2(point.x, startingPoint.y);
         }
 
         float t; // The spot on this line segment (from 0 = startingPoint to 1 = endingPoint) which is closest
@@ -36,8 +37,7 @@ public class LineShape : IShape
         t = point.x + (((point.y * lineVector.y) - (startingPoint.y * lineVector.y)) / lineVector.x) - startingPoint.x;
         t /= lineVector.x + (lineVector.y * lineVector.y / lineVector.x);
 
-        t = Mathf.Clamp(t, 0, 1);
-        return Vector3.Lerp(startingPoint, endingPoint, t);
+        return Vector3.LerpUnclamped(startingPoint, endingPoint, t);
     }
 
     public BezierContour Contour()
@@ -55,7 +55,7 @@ public class LineShape : IShape
         };
     }
 
-    public float CompareToStroke(PenStroke stroke)
+    public string CompareToStroke(PenStroke stroke)
     {
         List<Vector2> points = stroke.Points;
         List<float> distances = new();
@@ -68,6 +68,22 @@ public class LineShape : IShape
             averageDistance += distance;
         }
         averageDistance /= points.Count;
-        return averageDistance;
+
+        // Shakiness is defined by how much the distance varies as the stroke goes on
+        float shakiness = 0;
+        for (int i = 1; i < 10; i++)
+        {
+            int a = distances.Count * (i - 1) / 10;
+            int b = distances.Count * i / 10;
+            shakiness += Mathf.Abs(distances[b] - distances[a]);
+        }
+        shakiness /= 10;
+
+        Vector2 closestToStartingPoint = stroke.ClosestPointOnStrokeTo(startingPoint);
+        Vector2 closestToEndingPoint = stroke.ClosestPointOnStrokeTo(endingPoint);
+        float closestDistanceToStart = Vector2.Distance(closestToStartingPoint, startingPoint);
+        float closestDistanceToEnd = Vector2.Distance(closestToEndingPoint, endingPoint);
+
+        return $"AVG: {averageDistance}\nSHAKINESS: {shakiness}\nSTART DIST: {closestDistanceToStart}\nEND DIST: {closestDistanceToEnd}";
     }
 }
