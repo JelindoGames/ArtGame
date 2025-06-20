@@ -13,5 +13,5 @@ public abstract class ShapeGenerator : ScriptableObject
     /// Generate the bezier shape (min complexity cubic).
     /// </summary>
     /// <returns>The shape, with its segments and whether it's closed.</returns>
-    public abstract BezierContour Generate(Camera referenceCam);
+    public abstract IShape Generate(Camera referenceCam);
 }

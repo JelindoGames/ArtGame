@@ -6,11 +6,16 @@ using Unity.VectorGraphics;
 // A stroke of a raster pen.
 public class PenStroke
 {
-    List<Vector2> points;
+    public List<Vector2> points;
 
     public PenStroke(List<Vector2> points)
     {
         this.points = points;
+    }
+
+    public string CompareWithShape(IShape shape)
+    {
+        return "Similarity: " + shape.CompareToStroke(this);
     }
 
     // Returns this pen stroke's average distance to the given bezier curve
@@ -33,7 +38,7 @@ public class PenStroke
         }
 
         // For each representative bezier point, find the distance to the CLOSEST stroke point
-        List<float> distances = new();
+        List<float> bezierToStrokeDistances = new();
         foreach (Vector2 bezierPoint in bezierPoints)
         {
             float distance = float.MaxValue;
@@ -45,29 +50,61 @@ public class PenStroke
                     distance = newDistance;
                 }
             }
-            distances.Add(distance);
+            bezierToStrokeDistances.Add(distance);
+        }
+
+        // For each stroke point, find the closest representative bezier point
+        List<float> strokeToBezierDistances = new();
+        foreach (Vector2 strokePoint in points)
+        {
+            float distance = float.MaxValue;
+            foreach (Vector2 bezierPoint in bezierPoints)
+            {
+                float newDistance = Vector2.Distance(strokePoint, bezierPoint);
+                if (newDistance < distance)
+                {
+                    distance = newDistance;
+                }
+            }
+            strokeToBezierDistances.Add(distance);
         }
 
         Debug.Log("AMOUNT: " + points.Count);
 
-        // Average out distances
-        float averageDistance = 0;
-        foreach (float distance in distances)
+        // Find average of bezier to stroke
+        float averageBezierToStrokeDistance = 0;
+        foreach (float distance in bezierToStrokeDistances)
         {
-            averageDistance += distance;
+            averageBezierToStrokeDistance += distance;
         }
-        averageDistance /= distances.Count;
+        averageBezierToStrokeDistance /= bezierToStrokeDistances.Count;
 
-        // Find standard deviation
+        // Find average of stroke to bezier
+        float averageStrokeToBezierDistance = 0;
+        foreach (float distance in strokeToBezierDistances)
+        {
+            averageStrokeToBezierDistance += distance;
+        }
+        averageStrokeToBezierDistance /= strokeToBezierDistances.Count;
+
+        // Find 10 distances and find how much they vary
         float standardDeviation = 0;
-        foreach (float distance in distances)
+        for (int i = 1; i < 10; i++)
         {
-            standardDeviation += Mathf.Pow(distance - averageDistance, 2);
+            int a = strokeToBezierDistances.Count * (i - 1) / 10;
+            int b = strokeToBezierDistances.Count * i / 10;
+            standardDeviation += Mathf.Abs(strokeToBezierDistances[b] - strokeToBezierDistances[a]);
         }
-        standardDeviation /= distances.Count;
-        standardDeviation = Mathf.Sqrt(standardDeviation);
+        standardDeviation /= strokeToBezierDistances.Count;
+        /*
+        foreach (float distance in strokeToBezierDistances)
+        {
+            standardDeviation += Mathf.Pow(distance - averageStrokeToBezierDistance, 2);
+        }
+        */
 
-        return "AVG: " + averageDistance + "\n" +
-            "STD DEV: " + standardDeviation;
+        return "AVG B2S: " + averageBezierToStrokeDistance + "\n" +
+            "AVG S2B: " + averageStrokeToBezierDistance + "\n" +
+            "STD DEV S2B: " + standardDeviation;
     }
 }

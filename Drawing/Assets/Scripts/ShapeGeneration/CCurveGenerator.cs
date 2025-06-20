@@ -11,23 +11,14 @@ public class CCurveGenerator : ShapeGenerator
     [SerializeField] float minMidpointDistance;
     [SerializeField] float maxMidpointDistance;
 
-    public override BezierContour Generate(Camera referenceCam)
+    public override IShape Generate(Camera referenceCam)
     {
         float angle = Random.Range(-Mathf.PI / 2, Mathf.PI / 2);
         float length = Random.Range(minLength, maxLength);
         Vector2 startingPoint = GenerateStartingPoint(angle, length, referenceCam);
         Vector2 endingPoint = new Vector2(startingPoint.x + (Mathf.Cos(angle) * length), startingPoint.y + (Mathf.Sin(angle) * length));
         Vector2 midPoint = GenerateMidPoint(startingPoint, endingPoint, referenceCam);
-        var segments = new BezierPathSegment[]
-        {
-            new BezierPathSegment() { P0 = startingPoint, P1 = midPoint, P2 = endingPoint },
-            new BezierPathSegment() { P0 = endingPoint }
-        };
-        return new BezierContour()
-        {
-            Segments = segments,
-            Closed = false
-        };
+        return new CCurveShape(startingPoint, midPoint, endingPoint);
     }
 
     Vector2 GenerateMidPoint(Vector2 startingPoint, Vector2 endPoint, Camera referenceCam)

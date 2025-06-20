@@ -13,7 +13,7 @@ public class Lesson : MonoBehaviour
     [SerializeField] VoidEvent onLessonStart;
     [SerializeField] TextMeshProUGUI performanceText;
     Camera cam;
-    BezierContour currentContour;
+    IShape currentShape;
 
     void Start()
     {
@@ -27,13 +27,13 @@ public class Lesson : MonoBehaviour
     void StartExercise()
     {
         onLessonStart.Raise();
-        currentContour = shapeGenerator.Generate(cam);
-        ShapeDrawUtils.DrawShape(currentContour, drawShapesOn);
+        currentShape = shapeGenerator.Generate(cam);
+        ShapeDrawUtils.DrawShape(currentShape.Contour(), drawShapesOn);
     }
 
     public void ReviewExercise(PenStroke stroke)
     {
-        performanceText.text = stroke.CompareWithBezier(currentContour);
+        performanceText.text = stroke.CompareWithShape(currentShape);
         StartExercise();
     }
 }
