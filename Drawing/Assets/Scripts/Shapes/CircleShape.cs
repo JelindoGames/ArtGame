@@ -13,10 +13,8 @@ public class CircleShape : IShape
         this.radius = radius;
     }
 
-    /// <summary>
-    /// Returns the closest point in this circle to the given point.
-    /// </summary>
-    Vector2 ClosestPointOnCircleTo(Vector2 point)
+    // Override default IShape implementation for efficiency
+    public Vector2 ClosestPointOnShapeTo(Vector2 point)
     {
         Vector2 centerToPointVector = point - center;
         float centerToPointAngle = Mathf.Atan2(centerToPointVector.y, centerToPointVector.x);
@@ -64,7 +62,7 @@ public class CircleShape : IShape
         float averageDistance = 0;
         foreach (Vector2 point in points)
         {
-            Vector2 closestPointOnLine = ClosestPointOnCircleTo(point);
+            Vector2 closestPointOnLine = ClosestPointOnShapeTo(point);
             float distance = Vector2.Distance(point, closestPointOnLine);
             distances.Add(distance);
             averageDistance += distance;

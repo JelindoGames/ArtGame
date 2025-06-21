@@ -17,27 +17,34 @@ public class LineShape : IShape
     }
 
     /// <summary>
-    /// Finds the point on this line that the given point is closest to.
-    /// This line is treated as a full line, not a line segment, for this purposes.
+    /// Returns t, the point on the line where 0 is startingPoint and 1 is endingPoint,
+    /// which is closet to the given point. The returned number can be less than 0
+    /// or greater than 1.
     /// </summary>
-    Vector2 ClosestPointOnLineTo(Vector2 point)
+    float ClosestPointOnShapeUnbounded(Vector2 point)
     {
         Vector2 lineVector = endingPoint - startingPoint;
         if (lineVector.x == 0) // Vertical line case
         {
-            return new Vector2(startingPoint.x, point.y);
+            return (point.y - startingPoint.y) / (endingPoint.y - startingPoint.y);
         }
         if (lineVector.y == 0) // Horizontal line case
         {
-            return new Vector2(point.x, startingPoint.y);
+            return (point.x - startingPoint.x) / (endingPoint.x - startingPoint.x);
         }
 
-        float t; // The spot on this line segment (from 0 = startingPoint to 1 = endingPoint) which is closest
+        float t; // The spot on this line (where 0 = startingPoint to 1 = endingPoint) which is closest
         // Below is based on algebra of the intersection point of two lines
         t = point.x + (((point.y * lineVector.y) - (startingPoint.y * lineVector.y)) / lineVector.x) - startingPoint.x;
         t /= lineVector.x + (lineVector.y * lineVector.y / lineVector.x);
+        return t;
+    }
 
-        return Vector3.LerpUnclamped(startingPoint, endingPoint, t);
+    // Override default IShape implementation for efficiency
+    public Vector2 ClosestPointOnShapeTo(Vector2 point)
+    {
+        float t = Mathf.Clamp(ClosestPointOnShapeUnbounded(point), 0, 1);
+        return Vector3.Lerp(startingPoint, endingPoint, t);
     }
 
     public BezierContour Contour()
@@ -62,7 +69,7 @@ public class LineShape : IShape
         float averageDistance = 0;
         foreach (Vector2 point in points)
         {
-            Vector2 closestPointOnLine = ClosestPointOnLineTo(point);
+            Vector2 closestPointOnLine = ClosestPointOnShapeTo(point);
             float distance = Vector2.Distance(point, closestPointOnLine);
             distances.Add(distance);
             averageDistance += distance;
