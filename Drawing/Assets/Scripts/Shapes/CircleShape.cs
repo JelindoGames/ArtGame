@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.VectorGraphics;
 using UnityEngine;
 
@@ -10,6 +11,18 @@ public class CircleShape : IShape
     {
         this.center = center;
         this.radius = radius;
+    }
+
+    /// <summary>
+    /// Returns the closest point in this circle to the given point.
+    /// </summary>
+    Vector2 ClosestPointOnCircleTo(Vector2 point)
+    {
+        Vector2 centerToPointVector = point - center;
+        float centerToPointAngle = Mathf.Atan2(centerToPointVector.y, centerToPointVector.x);
+        float x = center.x + (Mathf.Cos(centerToPointAngle) * radius);
+        float y = center.y + (Mathf.Sin(centerToPointAngle) * radius);
+        return new Vector2(x, y);
     }
 
     public BezierContour Contour()
@@ -46,6 +59,38 @@ public class CircleShape : IShape
 
     public string CompareToStroke(PenStroke stroke)
     {
-        throw new System.NotImplementedException();
+        List<Vector2> points = stroke.Points;
+        List<float> distances = new();
+        float averageDistance = 0;
+        foreach (Vector2 point in points)
+        {
+            Vector2 closestPointOnLine = ClosestPointOnCircleTo(point);
+            float distance = Vector2.Distance(point, closestPointOnLine);
+            distances.Add(distance);
+            averageDistance += distance;
+        }
+        averageDistance /= points.Count;
+
+        // Shakiness is defined by how much the distance varies as the stroke goes on
+        float shakiness = 0;
+        for (int i = 1; i < 10; i++)
+        {
+            int a = distances.Count * (i - 1) / 10;
+            int b = distances.Count * i / 10;
+            shakiness += Mathf.Abs(distances[b] - distances[a]);
+        }
+        shakiness /= 10;
+
+        float incompleteScore = 0; // The less of the circle the stroke covers, the higher the incomplete score is
+        for (float theta = 0; theta < Mathf.PI * 2 - Mathf.Epsilon; theta += Mathf.PI / 4)
+        {
+            Vector2 pointAtAngle = new(center.x + (Mathf.Cos(theta) * radius), center.y + (Mathf.Sin(theta) * radius));
+            Vector2 closestPointOnStroke = stroke.ClosestPointOnStrokeTo(pointAtAngle);
+            float distance = Vector2.Distance(closestPointOnStroke, pointAtAngle);
+            incompleteScore += distance;
+        }
+        incompleteScore /= 8; // Average out the points we looked at
+
+        return $"AVG: {averageDistance}\nSHAKINESS: {shakiness}\nINCOMPLETENESS: {incompleteScore}";
     }
 }
