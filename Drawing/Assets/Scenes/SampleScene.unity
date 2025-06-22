@@ -876,7 +876,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 525d3d68d3c6f4b3a92cc309119a6f0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shapeGenerator: {fileID: 11400000, guid: 7a84121b6fce243279952e4def404aca, type: 2}
+  shapeGenerator: {fileID: 11400000, guid: 30c423362740447bfb2d6990a48843ce, type: 2}
   drawShapesOn: {fileID: 1021222259}
   playOnStart: 1
   onLessonStart: {fileID: 11400000, guid: 61a3197f4e9f34ce6b5a83ad91916735, type: 2}

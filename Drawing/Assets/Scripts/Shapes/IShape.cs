@@ -48,6 +48,16 @@ public interface IShape
             float by = (3 * p0.y) - (6 * p1.y) + (3 * p2.y);
             float cy = (-3 * p0.y) + (3 * p1.y);
             float dy = p0.y;
+            // Coefficients of the distance, when translated to standard polynomial form
+            /*
+            float dist_a = Mathf.Pow(ax, 2) + Mathf.Pow(ay, 2);
+            float dist_b = 2 * ((ax * bx) + (ay * by));
+            float dist_c = 2 * ((ax * cx) + (ay * cy)) + Mathf.Pow(bx, 2) + Mathf.Pow(by, 2);
+            float dist_d = 2 * ((ax * (dx - point.x)) + (bx * cx) + (ay * (dy - point.y)) + (by * cy));
+            float dist_e = (2 * ((bx * dx) - (bx * point.x) + (by * dy) - (by * point.y))) + Mathf.Pow(cx, 2) + Mathf.Pow(cy, 2);
+            float dist_f = 2 * ((cx * dx) - (cx * point.x) + (cy * dy) - (cy * point.y));
+            float dist_g = Mathf.Pow(dx, 2) + Mathf.Pow(point.x, 2) + Mathf.Pow(dy, 2) + Mathf.Pow(point.y, 2) - (2 * dx * point.x) - (2 * dy * point.y);
+            */
             // Coefficients of the distance derivative, when translated to standard polynomial form
             float da = 6 * (Mathf.Pow(ax, 2) + Mathf.Pow(ay, 2));
             float db = 10 * ((ax * bx) + (ay * by));
@@ -56,18 +66,23 @@ public interface IShape
             float de = 2 * ((2 * ((bx * dx) - (bx * point.x) + (by * dy) - (by * point.y))) + Mathf.Pow(cx, 2) + Mathf.Pow(cy, 2));
             float df = 2 * ((cx * dx) - (cx * point.x) + (cy * dy) - (cy * point.y));
             // Find roots of distance derivative function, filter out any imaginary results
-            Complex[] roots = FindRoots.Polynomial(new double[] { da, db, dc, dd, de, df });
+            Complex[] derivativeRoots = FindRoots.Polynomial(new double[] { df, de, dd, dc, db, da });
             List<double> realRoots = new();
-            foreach (Complex root in roots)
+            foreach (Complex root in derivativeRoots)
             {
-                if (root.IsReal())
+                if (Mathf.Abs((float)root.Imaginary) < 0.1f)
                 {
                     realRoots.Add(root.Real);
                 }
             }
+            //Debug.Log($"Distance {dist_a}x^6 + {dist_b}x^5 + {dist_c}x^4 + {dist_d}x^3 + {dist_e}x^2 + {dist_f}x + {dist_g}");
+            //Debug.Log($"Dist. Derivative {da}x^5 + {db}x^4 + {dc}x^3 + {dd}x^2 + {de}x + {df}");
+            realRoots.Add(0); // Add the start and end of the curve just in case those are closest (but not a local minimum)
+            realRoots.Add(1);
             // Each derivative root can be a local minimum. Find distance there to see if it's the min distance
             foreach (float t in realRoots)
             {
+                if (t < 0 || t > 1) continue;
                 float bezierPointX = (ax * Mathf.Pow(t, 3)) + (bx * Mathf.Pow(t, 2)) + (cx * t) + dx;
                 float bezierPointY = (ay * Mathf.Pow(t, 3)) + (by * Mathf.Pow(t, 2)) + (cy * t) + dy;
                 float distanceX = bezierPointX - point.x;
@@ -80,7 +95,7 @@ public interface IShape
                 }
             }
         }
-        Debug.Log(closestPoint);
+        //Debug.Log(closestPoint);
         return closestPoint;
     }
 
