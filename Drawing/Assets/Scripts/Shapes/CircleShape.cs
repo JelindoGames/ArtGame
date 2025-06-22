@@ -55,6 +55,7 @@ public class CircleShape : IShape
         };
     }
 
+    // Override default IShape implementation for details
     public string CompareToStroke(PenStroke stroke)
     {
         List<Vector2> points = stroke.Points;

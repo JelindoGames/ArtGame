@@ -54,9 +54,4 @@ public class EllipseShape : IShape
             Closed = true
         };
     }
-
-    public string CompareToStroke(PenStroke stroke)
-    {
-        throw new System.NotImplementedException();
-    }
 }

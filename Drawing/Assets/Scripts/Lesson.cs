@@ -34,6 +34,6 @@ public class Lesson : MonoBehaviour
     public void ReviewExercise(PenStroke stroke)
     {
         performanceText.text = stroke.CompareWithShape(currentShape);
-        StartExercise();
+        //StartExercise();
     }
 }

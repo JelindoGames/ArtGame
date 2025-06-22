@@ -27,9 +27,4 @@ public class CCurveShape : IShape
             Closed = false
         };
     }
-
-    public string CompareToStroke(PenStroke stroke)
-    {
-        throw new System.NotImplementedException();
-    }
 }
