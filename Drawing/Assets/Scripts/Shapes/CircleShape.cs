@@ -72,13 +72,16 @@ public class CircleShape : IShape
 
         // Shakiness is defined by how much the distance varies as the stroke goes on
         float shakiness = 0;
-        for (int i = 1; i < 10; i++)
+        if (points.Count != 0)
         {
-            int a = distances.Count * (i - 1) / 10;
-            int b = distances.Count * i / 10;
-            shakiness += Mathf.Abs(distances[b] - distances[a]);
+            for (int i = 1; i < 10; i++)
+            {
+                int a = distances.Count * (i - 1) / 10;
+                int b = distances.Count * i / 10;
+                shakiness += Mathf.Abs(distances[b] - distances[a]);
+            }
+            shakiness /= 10;
         }
-        shakiness /= 10;
 
         float incompleteScore = 0; // The less of the circle the stroke covers, the higher the incomplete score is
         for (float theta = 0; theta < Mathf.PI * 2 - Mathf.Epsilon; theta += Mathf.PI / 4)
