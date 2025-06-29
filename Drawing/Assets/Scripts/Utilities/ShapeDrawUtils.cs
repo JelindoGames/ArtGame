@@ -46,7 +46,7 @@ public static class ShapeDrawUtils
         List<Shape> shapesToDraw = new();
         foreach (Vector2 point in points)
         {
-            BezierContour contourToDraw = BezierUtils.CircleContour(point, 0.2f);
+            BezierContour contourToDraw = new CircleShape(point, 0.2f).Contour();
             var shapeToDraw = new Shape()
             {
                 Contours = new BezierContour[] { contourToDraw },
