@@ -84,13 +84,16 @@ public class LineShape : IShape
 
         // Shakiness is defined by how much the distance varies as the stroke goes on
         float shakiness = 0;
-        for (int i = 1; i < 10; i++)
+        if (points.Count != 0)
         {
-            int a = distances.Count * (i - 1) / 10;
-            int b = distances.Count * i / 10;
-            shakiness += Mathf.Abs(distances[b] - distances[a]);
+            for (int i = 1; i < 10; i++)
+            {
+                int a = distances.Count * (i - 1) / 10;
+                int b = distances.Count * i / 10;
+                shakiness += Mathf.Abs(distances[b] - distances[a]);
+            }
+            shakiness /= 10;
         }
-        shakiness /= 10;
 
         Vector2 closestToStartingPoint = stroke.ClosestPointOnStrokeTo(startingPoint);
         Vector2 closestToEndingPoint = stroke.ClosestPointOnStrokeTo(endingPoint);
