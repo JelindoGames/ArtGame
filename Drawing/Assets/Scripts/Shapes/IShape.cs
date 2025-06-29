@@ -15,6 +15,13 @@ public interface IShape
     public BezierContour Contour();
 
     /// <summary>
+    /// Gives the points that define this shape.
+    /// These aren't necessarily the same as the key points in this shape's BezierContour.
+    /// </summary>
+    /// <returns></returns>
+    public List<UnityEngine.Vector2> DefiningPoints();
+
+    /// <summary>
     /// Finds the closest point on this shape to the given point.
     /// </summary>
     public UnityEngine.Vector2 ClosestPointOnShapeTo(UnityEngine.Vector2 point)

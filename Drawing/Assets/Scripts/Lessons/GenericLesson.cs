@@ -21,7 +21,7 @@ public class GenericLesson : Lesson
     void StartExercise()
     {
         currentShape = shapeGenerator.Generate(cam);
-        ShapeDrawUtils.DrawShape(currentShape.Contour(), drawVectorShapesOn);
+        ShapeDrawUtils.DrawPoints(currentShape.DefiningPoints(), drawVectorShapesOn);
     }
 
     public override void OnStroke(PenStroke stroke)

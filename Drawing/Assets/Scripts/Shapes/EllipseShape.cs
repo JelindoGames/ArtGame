@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.VectorGraphics;
 using UnityEngine;
 
@@ -52,6 +53,17 @@ public class EllipseShape : IShape
         {
             Segments = segments,
             Closed = true
+        };
+    }
+
+    public List<Vector2> DefiningPoints()
+    {
+        return new List<Vector2>()
+        {
+            center + (xSize * new Vector2(Mathf.Cos(angle), Mathf.Sin(angle))),
+            center + (-xSize * new Vector2(Mathf.Cos(angle), Mathf.Sin(angle))),
+            center + (ySize * new Vector2(Mathf.Cos(angle + (Mathf.PI / 2)), Mathf.Sin(angle + (Mathf.PI / 2)))),
+            center + (-ySize * new Vector2(Mathf.Cos(angle + (Mathf.PI / 2)), Mathf.Sin(angle + (Mathf.PI / 2))))
         };
     }
 }

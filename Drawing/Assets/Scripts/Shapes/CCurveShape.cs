@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.VectorGraphics;
 using UnityEngine;
 
@@ -26,5 +27,10 @@ public class CCurveShape : IShape
             Segments = segments,
             Closed = false
         };
+    }
+
+    public List<Vector2> DefiningPoints()
+    {
+        return new List<Vector2>() { startingPoint, midPoint, endingPoint };
     }
 }

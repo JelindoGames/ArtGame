@@ -62,6 +62,11 @@ public class LineShape : IShape
         };
     }
 
+    public List<Vector2> DefiningPoints()
+    {
+        return new List<Vector2>() { startingPoint, endingPoint };
+    }
+
     // Override default IShape implementation for details
     public string CompareToStroke(PenStroke stroke)
     {
