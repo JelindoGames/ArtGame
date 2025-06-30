@@ -13,3 +13,6 @@ MonoBehaviour:
   m_Name: GenericCCurveLesson
   m_EditorClassIdentifier: 
   shapeGenerator: {fileID: 11400000, guid: 30c423362740447bfb2d6990a48843ce, type: 2}
+  evaluations:
+  - {fileID: 11400000, guid: bec97058c913c455d87cb9505c39e171, type: 2}
+  - {fileID: 11400000, guid: e1f79c1996d6b4a1c884d8ee67d3c898, type: 2}

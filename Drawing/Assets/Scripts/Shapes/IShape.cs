@@ -92,20 +92,4 @@ public interface IShape
         }
         return closestPoint;
     }
-
-    /// <summary>
-    /// Returns how similar this shape is to the given stroke.
-    /// Scored on a scale of 0 (completely different) to 1 (exactly the same).
-    /// </summary>
-    public string CompareToStroke(PenStroke stroke)
-    {
-        float averageDistance = 0;
-        foreach (UnityEngine.Vector2 point in stroke.Points)
-        {
-            UnityEngine.Vector2 closestPoint = ClosestPointOnShapeTo(point);
-            averageDistance += UnityEngine.Vector2.Distance(point, closestPoint);
-        }
-        averageDistance /= stroke.Points.Count;
-        return $"AVG DIST: {averageDistance}";
-    }
 }

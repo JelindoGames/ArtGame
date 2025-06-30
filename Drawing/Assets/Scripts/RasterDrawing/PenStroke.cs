@@ -13,12 +13,6 @@ public class PenStroke
         Points = points;
     }
 
-    public string CompareWithShape(IShape shape)
-    {
-        Debug.Log(Points.Count);
-        return shape.CompareToStroke(this);
-    }
-
     /// <summary>
     /// Goes through each point on the stroke to find which one is the closest
     /// to the given point.
