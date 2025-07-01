@@ -6,6 +6,8 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Evaluation/Circle/Circle Completeness")]
 public class CircleCompletenessEvaluation : CircleEvaluation
 {
+    [SerializeField] float scalingFactor;
+
     public override float Compare(CircleShape vector, PenStroke raster)
     {
         float incompleteScore = 0; // The less of the circle the stroke covers, the higher the incomplete score is
@@ -18,6 +20,6 @@ public class CircleCompletenessEvaluation : CircleEvaluation
         }
         incompleteScore /= 8; // Average out the points we looked at
 
-        return Mathf.Clamp(incompleteScore, 0, 1);
+        return Mathf.Clamp(incompleteScore * scalingFactor, 0, 1);
     }
 }

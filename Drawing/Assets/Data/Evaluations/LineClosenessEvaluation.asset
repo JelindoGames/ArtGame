@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc99d04f86e74ec5885e1fe794012e4, type: 3}
   m_Name: LineClosenessEvaluation
   m_EditorClassIdentifier: 
-  scalingFactor: 1
+  title: Distance
+  scalingFactor: 5

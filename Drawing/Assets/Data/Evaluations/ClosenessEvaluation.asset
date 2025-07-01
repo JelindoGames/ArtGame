@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aba15d9c9daa74db28fc7c35daa61255, type: 3}
   m_Name: ClosenessEvaluation
   m_EditorClassIdentifier: 
-  scalingFactor: 1
+  title: Distance
+  scalingFactor: 3

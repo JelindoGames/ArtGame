@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// Handles the logic for a line-drawing lesson.
 /// </summary>
-[CreateAssetMenu(menuName = "Lesson/LineLesson")]
+[CreateAssetMenu(menuName = "Lesson/Generic Lesson")]
 public class GenericLesson : Lesson
 {
     [SerializeField] ShapeGenerator shapeGenerator;
@@ -23,15 +23,14 @@ public class GenericLesson : Lesson
     void StartExercise()
     {
         currentShape = shapeGenerator.Generate(cam);
-        ShapeDrawUtils.DrawPoints(currentShape.DefiningPoints(), drawVectorShapesOn);
+        ShapeDrawUtils.DrawShape(currentShape.Contour(), drawVectorShapesOn);
     }
 
     public override void OnStroke(PenStroke stroke)
     {
-        //Debug.Log(stroke.CompareWithShape(currentShape));
         foreach (GenericEvaluation eval in evaluations)
         {
-            Debug.Log(eval.Compare(currentShape, stroke));
+            Debug.Log(eval.Title() + ": " + eval.Compare(currentShape, stroke));
         }
         StartExercise();
     }
