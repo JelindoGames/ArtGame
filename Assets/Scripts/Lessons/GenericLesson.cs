@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
+using TNRD;
 
 /// <summary>
-/// Handles the logic for a line-drawing lesson.
+/// Handles the logic for a generic lesson.
 /// </summary>
 [CreateAssetMenu(menuName = "Lesson/Generic Lesson")]
 public class GenericLesson : Lesson
 {
-    [SerializeField] ShapeGenerator shapeGenerator;
+    [SerializeField] SerializableInterface<ShapeGenerator<IShape>> shapeGenerator;
     [SerializeField] List<GenericEvaluation> evaluations;
     SpriteRenderer drawVectorShapesOn;
     IShape currentShape;
@@ -22,7 +23,7 @@ public class GenericLesson : Lesson
 
     void StartExercise()
     {
-        currentShape = shapeGenerator.Generate(cam);
+        currentShape = shapeGenerator.Value.Generate(cam);
         ShapeDrawUtils.DrawShape(currentShape.Contour(), drawVectorShapesOn);
     }
 

@@ -1,17 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Unity.VectorGraphics;
 
 /// <summary>
-/// Encompasses any class that can generate (either randomly or based on something)
-/// a bezier shape (min complexity cubic).
+/// Interface for a class that can generate a bezier shape (min complexity cubic).
 /// </summary>
-public abstract class ShapeGenerator : ScriptableObject
+public interface ShapeGenerator<out S> where S : IShape
 {
     /// <summary>
     /// Generate the bezier shape (min complexity cubic).
     /// </summary>
     /// <returns>The shape, with its segments and whether it's closed.</returns>
-    public abstract IShape Generate(Camera referenceCam);
+    public abstract S Generate(Camera referenceCam);
 }

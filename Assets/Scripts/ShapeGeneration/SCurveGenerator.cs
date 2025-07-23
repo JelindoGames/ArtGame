@@ -4,24 +4,24 @@ using Unity.VectorGraphics;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Shape Generator/S Curve")]
-public class SCurveGenerator : ShapeGenerator
+public class SCurveGenerator : ScriptableObject, ShapeGenerator<SCurveShape>
 {
     [SerializeField] float minLength;
     [SerializeField] float maxLength;
     [SerializeField] float minMidpointDistance;
     [SerializeField] float maxMidpointDistance;
 
-    public override IShape Generate(Camera referenceCam)
+    public SCurveShape Generate(Camera referenceCam)
     {
         float angle = Random.Range(-Mathf.PI / 2, Mathf.PI / 2);
         float length = Random.Range(minLength, maxLength);
         Vector2 startingPoint = GenerateStartingPoint(angle, length, referenceCam);
         Vector2 endingPoint = new Vector2(startingPoint.x + (Mathf.Cos(angle) * length), startingPoint.y + (Mathf.Sin(angle) * length));
-        var midPoints = GenerateMidPoints(startingPoint, endingPoint, referenceCam);
+        var midPoints = GenerateMidPoints(startingPoint, endingPoint);
         return new SCurveShape(startingPoint, midPoints.Item1, midPoints.Item2, endingPoint);
     }
 
-    System.Tuple<Vector2, Vector2> GenerateMidPoints(Vector2 startingPoint, Vector2 endPoint, Camera referenceCam)
+    System.Tuple<Vector2, Vector2> GenerateMidPoints(Vector2 startingPoint, Vector2 endPoint)
     {
         Vector2 linearMidPoint1 = Vector2.Lerp(startingPoint, endPoint, 0.333f);
         Vector2 linearMidPoint2 = Vector2.Lerp(startingPoint, endPoint, 0.666f);

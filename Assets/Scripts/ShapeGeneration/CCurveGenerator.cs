@@ -4,14 +4,14 @@ using Unity.VectorGraphics;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Shape Generator/C Curve")]
-public class CCurveGenerator : ShapeGenerator
+public class CCurveGenerator : ScriptableObject, ShapeGenerator<CCurveShape>
 {
     [SerializeField] float minLength;
     [SerializeField] float maxLength;
     [SerializeField] float minMidpointDistance;
     [SerializeField] float maxMidpointDistance;
 
-    public override IShape Generate(Camera referenceCam)
+    public CCurveShape Generate(Camera referenceCam)
     {
         float angle = Random.Range(-Mathf.PI / 2, Mathf.PI / 2);
         float length = Random.Range(minLength, maxLength);

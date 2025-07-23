@@ -4,12 +4,12 @@ using Unity.VectorGraphics;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Shape Generator/Line")]
-public class LineGenerator : ShapeGenerator
+public class LineGenerator : ScriptableObject, ShapeGenerator<LineShape>
 {
     [SerializeField] float minLength;
     [SerializeField] float maxLength;
 
-    public override IShape Generate(Camera referenceCam)
+    public LineShape Generate(Camera referenceCam)
     {
         float angle = Random.Range(-Mathf.PI / 2, Mathf.PI / 2);
         float length = Random.Range(minLength, maxLength);

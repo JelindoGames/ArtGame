@@ -12,7 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8ec113f4ee02458c942b65292501a31, type: 3}
   m_Name: GenericEllipseLesson
   m_EditorClassIdentifier: 
-  shapeGenerator: {fileID: 11400000, guid: 7a84121b6fce243279952e4def404aca, type: 2}
+  shapeGenerator:
+    mode: 0
+    unityReference: {fileID: 11400000, guid: 7a84121b6fce243279952e4def404aca, type: 2}
+    rawReference:
+      rid: -2
   evaluations:
   - {fileID: 11400000, guid: bec97058c913c455d87cb9505c39e171, type: 2}
   - {fileID: 11400000, guid: e1f79c1996d6b4a1c884d8ee67d3c898, type: 2}
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }

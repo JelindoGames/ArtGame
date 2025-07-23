@@ -4,12 +4,12 @@ using Unity.VectorGraphics;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Shape Generator/Circle")]
-public class CircleGenerator : ShapeGenerator
+public class CircleGenerator : ScriptableObject, ShapeGenerator<CircleShape>
 {
     [SerializeField] float minRadius;
     [SerializeField] float maxRadius;
 
-    public override IShape Generate(Camera referenceCam)
+    public CircleShape Generate(Camera referenceCam)
     {
         Vector2 centerPoint = FindCenterPoint(referenceCam);
         float radius = Random.Range(minRadius, maxRadius);

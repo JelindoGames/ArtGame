@@ -4,14 +4,14 @@ using Unity.VectorGraphics;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Shape Generator/Ellipse")]
-public class EllipseGenerator : ShapeGenerator
+public class EllipseGenerator : ScriptableObject, ShapeGenerator<EllipseShape>
 {
     [SerializeField] float minSizeX;
     [SerializeField] float maxSizeX;
     [SerializeField] float minSizeY;
     [SerializeField] float maxSizeY;
 
-    public override IShape Generate(Camera referenceCam)
+    public EllipseShape Generate(Camera referenceCam)
     {
         Vector2 centerPoint = FindCenterPoint(referenceCam);
         float xSize = Random.Range(minSizeX, maxSizeX);
