@@ -2259,7 +2259,7 @@ GameObject:
   - component: {fileID: 1283618416}
   - component: {fileID: 1283618418}
   m_Layer: 0
-  m_Name: Lesson Runner
+  m_Name: Lesson Runner (ER)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

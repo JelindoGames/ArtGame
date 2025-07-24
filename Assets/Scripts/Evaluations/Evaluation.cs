@@ -2,6 +2,10 @@ using UnityEngine;
 
 /// <summary>
 /// Object which compares a raster shape to a vector shape in some specific way.
+/// 
+/// NOTE: For ease of inspector selector use, you shouldn't directly inherit from this class!
+/// Instead, make a class which inherits from Evaluation<SomeSpecificClass>,
+/// and then inherit from that.
 /// </summary>
 public abstract class Evaluation<V> : ScriptableObject where V : IShape
 {
