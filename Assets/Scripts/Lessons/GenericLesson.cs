@@ -14,7 +14,7 @@ public class GenericLesson : Lesson
     IShape currentShape;
     Camera cam;
 
-    public override void StartLesson(SpriteRenderer drawVectorShapesOn)
+    protected override void OnLessonStart(SpriteRenderer drawVectorShapesOn)
     {
         cam = Camera.main;
         this.drawVectorShapesOn = drawVectorShapesOn;
@@ -25,6 +25,11 @@ public class GenericLesson : Lesson
     {
         currentShape = shapeGenerator.Value.Generate(cam);
         ShapeDrawUtils.DrawShape(currentShape.Contour(), drawVectorShapesOn);
+    }
+
+    protected override void OnLessonQuit()
+    {
+
     }
 
     public override void OnStroke(PenStroke stroke)

@@ -6,16 +6,25 @@ using UnityEngine;
 public class LessonRunner : MonoBehaviour
 {
     [SerializeField] SpriteRenderer drawShapesOn;
-    Lesson lesson;
+    Lesson currentLesson;
 
-    public void StartLesson(Lesson lesson)
+    public void StartLesson(Lesson newLesson)
     {
-        this.lesson = lesson;
-        lesson.StartLesson(drawShapesOn);
+        if (currentLesson != null)
+        {
+            currentLesson.QuitLesson();
+        }
+        currentLesson = newLesson;
+        currentLesson.StartLesson(drawShapesOn, OnLessonFinish);
+    }
+
+    void OnLessonFinish()
+    {
+        print("LessonRunner: The lesson told me it's over!");
     }
 
     public void OnStroke(PenStroke stroke)
     {
-        lesson.OnStroke(stroke);
+        currentLesson.OnStroke(stroke);
     }
 }
