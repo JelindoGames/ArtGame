@@ -42,9 +42,9 @@ public abstract class Lesson : ScriptableObject
     /// Ends the lesson naturally. To be called internally when the lesson is over.
     /// This also quits the lesson.
     /// </summary>
-    protected void FinishLesson()
+    protected void FinishLesson(LessonResult result)
     {
-        onLessonFinishCallback.Invoke();
+        onLessonFinishCallback.Invoke(result);
         QuitLesson();
     }
 

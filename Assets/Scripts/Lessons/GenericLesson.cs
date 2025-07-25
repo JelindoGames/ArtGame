@@ -47,7 +47,7 @@ public class GenericLesson : Lesson
         if (currentExercise < numberOfExercises)
             NextExercise();
         else
-            FinishLesson();
+            FinishLesson(new LessonResult());
     }
 
     protected override void OnLessonQuit()
