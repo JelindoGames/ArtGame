@@ -18,7 +18,7 @@ public class LessonRunner : MonoBehaviour
         currentLesson.StartLesson(drawShapesOn, OnLessonFinish);
     }
 
-    void OnLessonFinish()
+    void OnLessonFinish(LessonResult lessonResult)
     {
         print("LessonRunner: The lesson told me it's over!");
     }
